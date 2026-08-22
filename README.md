@@ -72,7 +72,7 @@ This lab provided hands-on experience with AWS IAM by demonstrating how organiza
 
 
 ## Author
-**Name:** BHARATH S  (212224100006)
+**Name:** S.Kowshik Ram  (212225230143)
 
 
 **Course:** Introduction to Cloud Computing  
