@@ -1,25 +1,31 @@
-# Lab 4 – Working with Amazon Elastic Block Store (EBS)
+# Lab 6 – Scale and Load Balance Your Architecture
 
 ## Author
 
-* **Name**: S.KOWSHIK RAM
+
+* **Name**: S.Kowshik Ram
 * **Register Number**: 212225230143
-* **Date of Submission**: 24-08-2026
+  
+---
+
+## Title
+
+Scale and Load Balance Your Architecture
 
 ---
 
 ## Objective
 
-The objective of this experiment is to understand how Amazon Elastic Block Store (EBS) provides persistent block-level storage for EC2 instances. This lab focuses on creating and attaching an EBS volume, formatting and mounting it on an EC2 instance, storing data, and verifying data persistence after instance reboot.
+The objective of this lab is to understand how to design a scalable and highly available architecture on AWS using Auto Scaling and Elastic Load Balancing. This experiment focuses on distributing incoming traffic across multiple EC2 instances, automatically scaling resources based on demand, and validating fault tolerance.
 
 ---
 
 ## Prerequisites
 
-* Basic understanding of cloud computing concepts
-* AWS account or AWS Academy Lab access
-* An existing EC2 instance (Amazon Linux 2 preferred)
-* Basic knowledge of Linux commands
+* Basic knowledge of Amazon EC2 and VPC
+* Completion of previous labs (IAM, EC2, EBS, Database Server)
+* AWS Academy Lab access
+* Stable internet connection
 
 ---
 
@@ -27,112 +33,79 @@ The objective of this experiment is to understand how Amazon Elastic Block Store
 
 * AWS Management Console
 * Amazon EC2
-* Amazon EBS
-* SSH Client (Terminal / PuTTY)
+* Elastic Load Balancer (ELB / ALB)
+* Auto Scaling Groups (ASG)
+* Amazon CloudWatch
 
 ---
 
 ## Tasks Performed
 
-### Task 1: Explore Amazon EBS
+### Task 1: Review Existing Architecture
 
-Explore the Amazon EBS service through the EC2 dashboard. Observe different volume types such as General Purpose SSD (gp2/gp3), Provisioned IOPS SSD, Throughput Optimized HDD, and Cold HDD.
+Students review the existing EC2-based application architecture created in previous experiments.
 
----
+### Task 2: Create a Launch Template
 
-### Task 2: Create an EBS Volume
+Students create a launch template that defines the EC2 instance configuration including AMI, instance type, security group, and user data.
 
-Create a new EBS volume in the same Availability Zone as the EC2 instance. Choose an appropriate size and volume type.
+### Task 3: Create an Auto Scaling Group
 
----
+Students create an Auto Scaling Group using the launch template and configure minimum, maximum, and desired instance capacity.
 
-### Task 3: Attach EBS Volume to EC2 Instance
+### Task 4: Configure an Application Load Balancer
 
-Attach the created EBS volume to the running EC2 instance as an additional block device.
+Students create an Application Load Balancer and configure target groups for routing traffic to EC2 instances.
 
----
+### Task 5: Register Auto Scaling Group with Load Balancer
 
-### Task 4: Format the EBS Volume
+Students attach the Auto Scaling Group to the target group of the load balancer.
 
-Connect to the EC2 instance using SSH and format the attached volume with a file system (for example, ext4).
+### Task 6: Configure Scaling Policies
 
----
+Students configure scaling policies based on CPU utilization using Amazon CloudWatch alarms.
 
-### Task 5: Mount the EBS Volume
+### Task 7: Test Load Balancing and Scaling
 
-Mount the formatted volume to a directory in the EC2 instance (for example, /data or /mnt/ebs).
-
----
-
-### Task 6: Store Data in EBS Volume
-
-Create files and directories inside the mounted EBS volume and store sample data.
-
----
-
-### Task 7: Verify Data Persistence
-
-Reboot the EC2 instance and verify that the data stored in the EBS volume is still available after reboot.
+Students test the setup by generating traffic and observing automatic scaling and load distribution.
 
 ---
 
 ## Workflow (Student Explanation)
 
-(Write the steps you followed in your own words)
-```
-1. Created an Amazon EBS volume
+1. I reviewed the existing EC2-based application architecture that I had created in previous experiments to understand how the instances were configured and how the application was being accessed.
 
-2. Attached the volume to an EC2 instance
+2. I created a Launch Template by defining the EC2 configuration, including the Amazon Machine Image (AMI), instance type, key pair, security group, and user data script for automatic application setup during instance launch.
 
-3. Created a file system on the volume
+3. Using the launch template, I created an Auto Scaling Group. I configured the minimum, maximum, and desired capacity values to control how many EC2 instances should run based on demand. I also selected the appropriate VPC and subnets.
 
-4. Added a file to volume
+4. Next, I created an Application Load Balancer and configured a target group. I set the protocol and port (HTTP/HTTPS) and defined health check settings to monitor the EC2 instances.
 
-5. Created a snapshot of volume
+5. I attached the Auto Scaling Group to the target group so that any instances launched by the Auto Scaling Group would automatically register with the Load Balancer.
 
-6. Created a new volume from the snapshot
+6. I configured scaling policies based on CPU utilization. I created Amazon CloudWatch alarms to automatically increase the number of instances when CPU usage was high and decrease them when CPU usage was low.
 
-7. Attached and mounted the new volume to the EC2 instance
-
-8. Verified that the file created earlier was on the newly created volume
-
-
-```
-
+7. Finally, I tested the setup by generating traffic to the Load Balancer DNS name. I observed that the traffic was distributed evenly across instances and that additional instances were launched automatically when the CPU utilization threshold was exceeded.
 
 ---
 
-## Output Screenshots (Attach 3)
+## Output Screenshots 
 
-### Screenshot 1: EBS Volume Created
+## Created LoadBalancer
 
-<img width="1918" height="967" alt="img1" src="https://github.com/user-attachments/assets/7c5d8aff-49d9-4eca-8184-3beafc3610db" />
+<img width="1920" height="967" alt="image" src="https://github.com/user-attachments/assets/30bcd1d3-d987-4d74-8107-4e3a64acadc3" />
 
----
+## Created LabConfig
 
-### Screenshot 2: EBS Volume Attached to EC2
+<img width="1920" height="967" alt="image" src="https://github.com/user-attachments/assets/6da7573d-c81b-4621-91aa-e419be44821b" />
 
-<img width="1918" height="982" alt="img2" src="https://github.com/user-attachments/assets/775e04d1-d5bb-4356-b72f-f6f6671336f6" />
+## Dynamic Scaling Policy created
 
-
----
-
-### Screenshot 3: Mounted Volume with Data
-
-<img width="1915" height="992" alt="img3" src="https://github.com/user-attachments/assets/4b7e026c-2df5-4dcd-b71c-bdd678bd82e3" />
-
-
-
-
-
-<img width="1918" height="977" alt="img4" src="https://github.com/user-attachments/assets/e4320fd8-d862-4800-8e67-68579e30b739" />
-
-
-
-
+<img width="1920" height="967" alt="image" src="https://github.com/user-attachments/assets/d09eafcc-42ca-43e2-8b6d-de4b226b63f7" />
 
 ---
 
-## Result / Conclusion
 
-This experiment demonstrated how Amazon EBS provides persistent storage for EC2 instances. By creating, attaching, formatting, and mounting an EBS volume, and by verifying data after reboot, the concept of durable block storage in the cloud was clearly understood.
+## Result
+
+This experiment demonstrated how to build a scalable and fault-tolerant cloud architecture using Auto Scaling Groups and Elastic Load Balancing. The system automatically adjusted resources based on workload and ensured continuous service availability by distributing traffic across multiple instances.
